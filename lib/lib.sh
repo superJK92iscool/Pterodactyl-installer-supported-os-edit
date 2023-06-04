@@ -125,7 +125,7 @@ welcome() {
   output "Pterodactyl panel installation script @ $SCRIPT_RELEASE"
   output ""
   output "Copyright (C) 2018 - 2023, Vilhelm Prytz, <vilhelm@prytznet.se>"
-  output "https://github.com/pterodactyl-installer/pterodactyl-installer"
+  output "https://github.com/superJK92iscool/Pterodactyl-installer-supported-os-edit/"
   output ""
   output "This script is not associated with the official Pterodactyl Project."
   output ""
@@ -242,7 +242,7 @@ update_repos() {
   local args=""
   [[ $1 == true ]] && args="-qq"
   case "$OS" in
-  ubuntu | debian)
+  pop | debian)
     apt-get -y $args update
     ;;
   *)
@@ -256,14 +256,14 @@ install_packages() {
   local args=""
   if [[ $2 == true ]]; then
     case "$OS" in
-    ubuntu | debian) args="-qq" ;;
+    pop | debian) args="-qq" ;;
     *) args="-q" ;;
     esac
   fi
 
   # Eval needed for proper expansion of arguments
   case "$OS" in
-  ubuntu | debian)
+  pop | debian)
     eval apt-get -y $args install "$1"
     ;;
   rocky | almalinux)
@@ -348,7 +348,7 @@ ask_firewall() {
   local __resultvar=$1
 
   case "$OS" in
-  ubuntu | debian)
+  pop | debian)
     echo -e -n "* Do you want to automatically configure UFW (firewall)? (y/N): "
     read -r CONFIRM_UFW
 
@@ -369,7 +369,7 @@ ask_firewall() {
 
 install_firewall() {
   case "$OS" in
-  ubuntu | debian)
+  pop | debian)
     output ""
     output "Installing Uncomplicated Firewall (UFW)"
 
@@ -402,7 +402,7 @@ install_firewall() {
 
 firewall_allow_ports() {
   case "$OS" in
-  ubuntu | debian)
+  pop | debian)
     for port in $1; do
       ufw allow "$port"
     done
@@ -487,12 +487,12 @@ elif type lsb_release >/dev/null 2>&1; then
   OS=$(lsb_release -si | awk '{print tolower($0)}')
   OS_VER=$(lsb_release -sr)
 elif [ -f /etc/lsb-release ]; then
-  # For some versions of Debian/Ubuntu without lsb_release command
+  # For some versions of Debian/pop without lsb_release command
   . /etc/lsb-release
   OS=$(echo "$DISTRIB_ID" | awk '{print tolower($0)}')
   OS_VER=$DISTRIB_RELEASE
 elif [ -f /etc/debian_version ]; then
-  # Older Debian/Ubuntu/etc.
+  # Older Debian/pop/etc.
   OS="debian"
   OS_VER=$(cat /etc/debian_version)
 elif [ -f /etc/SuSe-release ]; then
@@ -527,7 +527,7 @@ arm64 | aarch64)
 esac
 
 case "$OS" in
-ubuntu)
+pop)
   [ "$OS_VER_MAJOR" == "18" ] && SUPPORTED=true
   [ "$OS_VER_MAJOR" == "20" ] && SUPPORTED=true
   [ "$OS_VER_MAJOR" == "22" ] && SUPPORTED=true
