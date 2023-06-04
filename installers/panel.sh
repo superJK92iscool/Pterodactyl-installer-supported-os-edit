@@ -172,9 +172,9 @@ configure() {
 
 # set the correct folder permissions depending on OS and webserver
 set_folder_permissions() {
-  # if os is ubuntu or debian, we do this
+  # if os is pop or debian, we do this
   case "$OS" in
-  debian | ubuntu)
+  debian | pop)
     chown -R www-data:www-data ./*
     ;;
   rocky | almalinux)
@@ -200,7 +200,7 @@ install_pteroq() {
   curl -o /etc/systemd/system/pteroq.service "$GITHUB_URL"/configs/pteroq.service
 
   case "$OS" in
-  debian | ubuntu)
+  debian | pop)
     sed -i -e "s@<user>@www-data@g" /etc/systemd/system/pteroq.service
     ;;
   rocky | almalinux)
@@ -218,7 +218,7 @@ install_pteroq() {
 
 enable_services() {
   case "$OS" in
-  ubuntu | debian)
+  pop | debian)
     systemctl enable redis-server
     systemctl start redis-server
     ;;
@@ -245,11 +245,11 @@ php_fpm_conf() {
   systemctl start php-fpm
 }
 
-ubuntu_dep() {
+pop_dep() {
   # Install deps for adding repos
   install_packages "software-properties-common apt-transport-https ca-certificates gnupg"
 
-  # Add Ubuntu universe repo
+  # Add pop universe repo
   add-apt-repository universe -y
 
   # Add the MariaDB repo (bionic has mariadb version 10.1 and we need newer than that)
@@ -287,8 +287,8 @@ dep_install() {
   [ "$CONFIGURE_FIREWALL" == true ] && install_firewall && firewall_ports
 
   case "$OS" in
-  ubuntu | debian)
-    [ "$OS" == "ubuntu" ] && ubuntu_dep
+  pop | debian)
+    [ "$OS" == "pop" ] && pop_dep
     [ "$OS" == "debian" ] && debian_dep
 
     update_repos
@@ -379,7 +379,7 @@ configure_nginx() {
   fi
 
   case "$OS" in
-  ubuntu | debian)
+  pop | debian)
     PHP_SOCKET="/run/php/php8.1-fpm.sock"
     CONFIG_PATH_AVAIL="/etc/nginx/sites-available"
     CONFIG_PATH_ENABL="/etc/nginx/sites-enabled"
@@ -400,7 +400,7 @@ configure_nginx() {
   sed -i -e "s@<php_socket>@${PHP_SOCKET}@g" "$CONFIG_PATH_AVAIL"/pterodactyl.conf
 
   case "$OS" in
-  ubuntu | debian)
+  pop | debian)
     ln -sf "$CONFIG_PATH_AVAIL"/pterodactyl.conf "$CONFIG_PATH_ENABL"/pterodactyl.conf
     ;;
   esac
