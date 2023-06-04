@@ -8,17 +8,17 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell",
     inline: "ln -sf /vagrant/lib/lib.sh /tmp/lib.sh"
 
-  # ubuntu
-  config.vm.define "ubuntu_jammy" do |ubuntu_jammy|
-    ubuntu_jammy.vm.box = "ubuntu/jammy64"
+  # pop
+  config.vm.define "pop_jammy" do |pop_jammy|
+    pop_jammy.vm.box = "pop/jammy64"
   end
 
-  config.vm.define "ubuntu_focal" do |ubuntu_focal|
-    ubuntu_focal.vm.box = "ubuntu/focal64"
+  config.vm.define "pop_focal" do |pop_focal|
+    pop_focal.vm.box = "pop/focal64"
   end
 
-  config.vm.define "ubuntu_bionic" do |ubuntu_bionic|
-    ubuntu_bionic.vm.box = "ubuntu/bionic64"
+  config.vm.define "pop_bionic" do |pop_bionic|
+    pop_bionic.vm.box = "pop/bionic64"
   end
 
   # debian
